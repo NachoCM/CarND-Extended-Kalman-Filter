@@ -6,16 +6,16 @@ class KalmanFilter {
 public:
 
   // state vector
-  Eigen::VectorXd x_;
+  Eigen::Vector4d x_;
 
   // state covariance matrix
-  Eigen::MatrixXd P_;
+  Eigen::Matrix4d P_;
 
   // state transition matrix
-  Eigen::MatrixXd F_;
+  Eigen::Matrix4d F_;
 
   // process covariance matrix
-  Eigen::MatrixXd Q_;
+  Eigen::Matrix4d Q_;
 
   // measurement matrix
   Eigen::MatrixXd H_;
@@ -45,6 +45,12 @@ public:
   void Init(Eigen::VectorXd &x_in, Eigen::MatrixXd &P_in, Eigen::MatrixXd &F_in,
       Eigen::MatrixXd &H_in, Eigen::MatrixXd &R_in, Eigen::MatrixXd &Q_in);
 
+  /**
+   * Normalizes an angle to be between -PI and PI
+   * @param x Angle in radians to normalize
+   */
+  double normalizeAngle(double x);
+    
   /**
    * Prediction Predicts the state and the state covariance
    * using the process model

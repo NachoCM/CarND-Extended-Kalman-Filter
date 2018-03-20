@@ -45,7 +45,6 @@ int main()
 
     if (length && length > 2 && data[0] == '4' && data[1] == '2')
     {
-
       auto s = hasData(std::string(data));
       if (s != "") {
       	
@@ -55,7 +54,6 @@ int main()
         
         if (event == "telemetry") {
           // j[1] is the data JSON object
-          
           string sensor_measurment = j[1]["sensor_measurement"];
           
           MeasurementPackage meas_package;
@@ -67,6 +65,7 @@ int main()
     	  iss >> sensor_type;
 
     	  if (sensor_type.compare("L") == 0) {
+                //cout<<"Got Laser"<<'\n';
       	  		meas_package.sensor_type_ = MeasurementPackage::LASER;
           		meas_package.raw_measurements_ = VectorXd(2);
           		float px;
@@ -77,7 +76,7 @@ int main()
           		iss >> timestamp;
           		meas_package.timestamp_ = timestamp;
           } else if (sensor_type.compare("R") == 0) {
-
+                //cout<<"Got Radar"<<'\n';
       	  		meas_package.sensor_type_ = MeasurementPackage::RADAR;
           		meas_package.raw_measurements_ = VectorXd(3);
           		float ro;
@@ -104,12 +103,10 @@ int main()
     	  gt_values(2) = vx_gt;
     	  gt_values(3) = vy_gt;
     	  ground_truth.push_back(gt_values);
-          
           //Call ProcessMeasurment(meas_package) for Kalman filter
     	  fusionEKF.ProcessMeasurement(meas_package);    	  
 
     	  //Push the current estimated x,y positon from the Kalman filter's state vector
-
     	  VectorXd estimate(4);
 
     	  double p_x = fusionEKF.ekf_.x_(0);
@@ -123,9 +120,9 @@ int main()
     	  estimate(3) = v2;
     	  
     	  estimations.push_back(estimate);
-
     	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
-
+          //std::cout<<"Estimations: \n"<<estimations.back()<<'\n';
+          //std::cout<<"Ground Truth:\n"<<ground_truth.back()<<'\n';
           json msgJson;
           msgJson["estimate_x"] = p_x;
           msgJson["estimate_y"] = p_y;

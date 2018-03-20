@@ -40,8 +40,8 @@ private:
 
   // tool object used to compute Jacobian and RMSE
   Tools tools;
-  Eigen::MatrixXd R_laser_;
-  Eigen::MatrixXd R_radar_;
+  Eigen::Matrix2d R_laser_;
+  Eigen::Matrix3d R_radar_;
   Eigen::MatrixXd H_laser_;
   Eigen::MatrixXd Hj_;
 };
